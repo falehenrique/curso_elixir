@@ -1,0 +1,191 @@
+Instalação:
+https://elixir-lang.org/install.html#unix-and-unix-like
+
+.ex  - Extensão
+.exs - Extensão de script
+
+ IEx
+
+Helpers
+h()
+r/1 recompilar
+i/1 inspecionar
+
+
+iex - semelhante ao erb do ruby, client elixir para executar comandos
+
+Tipos básicos do Elixir
+○ iex> 1 # integer
+○ iex> 1.0 # float
+○ iex> 0x1F # integer
+○ iex> true # boolean
+○ iex> :atom # atom / symbol
+○ iex> "elixir" # string
+○ iex> [1, 2, 3] # list
+○ iex> {1, 2, 3} # tuple
+
+
+First-Class functions
+○ Pure functions
+○ Immutable variables
+○ Recursion
+○ Nonstrict evaluation
+○ Statements - Expressões
+- puts "Olá"
+○ Pattern matching
+
+float
+div - resultado sem casa decimal
+rem - mod resto da divisão
+round - arredondar
+trunc - remove as casas decimais
+
+Kernel - Agrupa funções, é default do ambiente.
+
+Binário. Hecadecimal e Octal
+0x1f 
+ob - binário
+0o - octal
+ox - exadecimal
+
+Booleanos
+==
+< 
+>
+
+Como saber o tipo de uma variavel
+is_boolean
+is_atom
+is_integer
+is_float
+is_number
+
+Atomos - é uma constante que o nome não muda e o valor
+a = "ABC" = :ABC
+is_atom
+
+String - sequencia de bytes ao invés de um array de caracteres
+byte_size()
+String.length("José")
+concatenar <>
+IO.puts "teste" <> "\n" <> "Ola" <> "#{2 + 5}"
+representação binária - <<0>>>
+"José" <> <<0>>
+abc = <<74, 111, 115, 195, 169>>
+
+Codepoints são caracteres Unicode
+?a - code point
+?é
+
+Caso seja necessário trabalhar com lista usar ''
+to_charlist "José"
+
+
+Lista
+Não são vetores e sim lista em cadeadas, cada valor fica em uma posição 
+da memória
+funções
+adionar 
+++
+remover
+--
+hd/1 - Head - cabeça da lista
+t1/1 - tail - Calda da lista
+
+Tuplas - Mas próximos de array
+{} 
+Na memória os itens ficam seguidos
+elem({43,1},1)
+put_elem
+
+
+Immutable variables
+os valores são alterados somente por escopo.
+
+exemplo:
+a = 100
+puts a-1
+Valor não altera
+
+Agora 
+
+a = 100
+a = 100 - 1
+valor altera
+
+def altera(a) do
+ a = 50
+ puts a - aqui vai imprimir 50
+ a
+end
+
+puts altera(a) - vai retornar o valor alterado mas o valor de a continua sendo mesmo, pois não atribui a variavel.
+
+Pipe Operator
+Com ele é possível enviar o retorno de uma função para o primeiro campo de outra
+1+1 | IO.puts >
+
+A lista não é indexavel somente a Tuplas
+tupla {"hello", :world, 123}
+lista ["Elixir"]
+
+Keyword list
+uma lista de tuplas onde sempre tem uma chave e valor, a chave é uma atomo.
+
+[{:a,22}, {:b,77}] ou [a:,22, b:,77]
+
+Maps
+Os maps são indexados, não permitem chaves iguais e a chave permite qualquer tipo.
+m = %{:a => 1, 2 => :b}
+
+Quando a chave for do tipo atomo é possível acessar pelo nome
+m.a
+
+funções
+é possível criar funções com o mesmo nome
+defmodule MyModule.SaySomething do
+    def hello_world do
+
+    end
+    def hello_world(msg) do
+        msg
+    end
+end
+
+
+funções com nomes curtos
+def hello_world, do: "Olá mundo"
+
+
+defp - privado
+
+Clausulas de guarda para proteger a função
+Utilizadas na assinatura da função
+    def to(n) *when n > 0 do*
+
+Recursão
+A variavel vai alterando em linguagens não funcionais, assim usamos for, while..
+Já em funcional existe a imutabilidade, sendo assim em 99% casos se usam chamadas a propria função.
+
+Tail-Call Optimization
+é quando o compilador reduz as funções em memória sem alocar mais memória
+
+Recursividade com funções anonimas
+iex(19)> factorial = fn
+...(19)> 0 -> 1
+...(19)> x when x > 0 -> x * factorial.(x-1)
+...(19)> end
+Factorial ainda não existe então vai ocorrer um erro
+
+fact_gen = fn me ->
+    fn 
+        0 -> 1
+        x when > 0 -> x * me.(me).(x-1)
+    end
+end
+
+
+Funções Puras x Impuras
+Impura não podemos prever seu resultado
+Pura - Retorna o mesmo resultado e não provoca efeitos colaterais fora do seu escopo.
+
